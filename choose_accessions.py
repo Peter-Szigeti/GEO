@@ -7,7 +7,8 @@ import pandas as pd
 base_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/"
 
 # Define your search query
-query = 'gpl16791 AND "lung cancer"* AND treatment NOT ("single-cell") AND 20:10000[Number of Samples] ' 
+platform = 'gpl16791'
+query = f'{platform} AND "lung cancer"* AND treatment NOT ("single-cell") AND 20:10000[Number of Samples]' 
 
 # Set the search parameters
 params = {
@@ -56,7 +57,7 @@ for accession_number in accession_numbers:
             maybe.append([accession_number, overall_design])
 
 
-pd.DataFrame(super_series, columns=['Accession Number', 'Content']).to_csv('super_series.csv', index=False)
-pd.DataFrame(no_good, columns=['Accession Number', 'Content']).to_csv('no_good.csv', index=False)
-pd.DataFrame(good, columns=['Accession Number', 'Content']).to_csv('good.csv', index=False)
-pd.DataFrame(maybe, columns=['Accession Number', 'Content']).to_csv('maybe.csv', index=False)
+pd.DataFrame(super_series, columns=['Accession Number', 'Content']).to_csv(f'super_series_{platform}.csv', index=False)
+pd.DataFrame(no_good, columns=['Accession Number', 'Content']).to_csv(f'no_good_{platform}.csv', index=False)
+pd.DataFrame(good, columns=['Accession Number', 'Content']).to_csv(f'good_{platform}.csv', index=False)
+pd.DataFrame(maybe, columns=['Accession Number', 'Content']).to_csv(f'maybe_{platform}.csv', index=False)
