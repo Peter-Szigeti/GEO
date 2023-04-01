@@ -1,5 +1,4 @@
-# Author: Chat GPT-3.5
-# Co-Author: Me
+# Co-Author: Chat GPT and Copilot
 import requests
 import re
 import pandas as pd
@@ -14,7 +13,7 @@ query = f'{platform} AND "lung cancer"* AND treatment NOT ("single-cell") AND 20
 params = {
     "db": "gds",
     "term": query,
-    "retmax": 1000, # Ez az én hozzájárulásom
+    "retmax": 1000, 
     "retmode": "json",
     'sort':'SAMPLE_SIZE',
     'order':'descending'
@@ -26,7 +25,6 @@ response = requests.get(base_url + "esearch.fcgi", params=params)
 data = response.json()
 
 # Get the list of data set IDs from the search results
-
 id_list = data["esearchresult"]["idlist"]
 print(f"Found {len(id_list)} results.")
 
@@ -35,12 +33,18 @@ print("Getting data set metadata...")
 mylist = [requests.get(base_url + "efetch.fcgi", params={"db": "gds", "id": id, "rettype": "xml"}) for id in id_list]
 mylist = [el.content.decode('utf-8') for el in mylist]
 print('Done.')
+
+# Get the accession numbers from mylist
 accession_numbers = [el.split('\n')[-2].split(' ')[1].split('\t')[0] for el in mylist if len(el.split('\n')[-2].split(' ')) == 3]
+# Define a function to retrieve metadata from GEO Accession viewer
 get_content = lambda accession_number: requests.get(f"https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={accession_number}&targ=self&form=text&view=brief").content.decode('utf-8')
+# Some lists for saving my choices
 super_series = []
 no_good = []
 good = []
 maybe = []
+# Loop through the accession numbers and manually decide whether to use the specific number or not
+# Based on some metadata
 for accession_number in accession_numbers:
     series_content = get_content(accession_number)
     overall_design = re.findall(r'!Series_overall_design = .*', series_content)[0]
@@ -56,7 +60,7 @@ for accession_number in accession_numbers:
         else:
             maybe.append([accession_number, overall_design])
 
-
+# Save results
 pd.DataFrame(super_series, columns=['Accession Number', 'Content']).to_csv(f'super_series_{platform}.csv', index=False)
 pd.DataFrame(no_good, columns=['Accession Number', 'Content']).to_csv(f'no_good_{platform}.csv', index=False)
 pd.DataFrame(good, columns=['Accession Number', 'Content']).to_csv(f'good_{platform}.csv', index=False)
