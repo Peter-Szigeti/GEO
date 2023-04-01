@@ -18,7 +18,7 @@ The idea is very simple, you can use the requests library and requests.get() and
     'order':'descending'
 }
 2. Geting the metadata from the Accession viewer by the accession number:  
- f'https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={accession_number}&targ=self&form=text&view=brief'(note that this is an f string)
+ https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={accession_number}&targ=self&form=text&view=brief    (note that this is an f string)
 
 ## Sample code: *choose_accessions.py* 
 You can provide a platform(the id of the device that was used for sequencing) and some search terms at the start of the code. Than gets all the matching Series and their Accession numbers. It than loops around the Accession numbers, prints some metadata(in my case *study design*) and than you can decide whether it is good for you bad for you or you have no idea. Finally it saves these into csv files(good.csv, no_good.csv, maybe.csv )
