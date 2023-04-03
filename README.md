@@ -2,11 +2,11 @@
 ## TLDR;
 I made this script becouse I wanted to
 1. Query stuff from GEO
-2. For each individual results review some metadata to decide whether it is eligible to use in our study or not.
-3. And than write down their accession numbers in some spreadsheet so that we can find them later.
-4. I thought it is probably way faster than doing it by hand
+2. For individual results, manually review some metadata to decide whether it is eligible to use in our study or not.
+3. And than write down their Accession numbers in some spreadsheet so that we can find them later.
+4. This is faster and more flexible than trying to do it with a browser
 
-The idea is very simple, you can use the requests library and requests.get() and these two urls:
+This method uses the requests module in python and these two urls:
 1. For searching in GEO: https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi
     + with parameters:
         + params = {
